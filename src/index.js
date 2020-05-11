@@ -16,8 +16,7 @@ bot.on("messageCreate", async ({ channel, content }) => {
       const query = `
         {
           estreamers {
-            id
-            username
+            tid
             access_token
             token_secret
           }
