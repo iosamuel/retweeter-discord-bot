@@ -19,6 +19,9 @@ bot.on("messageCreate", async ({ channel, content }) => {
             tid
             access_token
             token_secret
+            permissions {
+              retweet
+            }
           }
         }
       `;
@@ -34,17 +37,19 @@ bot.on("messageCreate", async ({ channel, content }) => {
         .then(res => res.json())
         .then(({ data: { estreamers } }) => {
           estreamers.forEach(estreamer => {
-            const client = new Twitter({
-              consumer_key: process.env.TWITTER_API_KEY,
-              consumer_secret: process.env.TWITTER_SECRET_API_KEY,
-              access_token_key: estreamer.access_token,
-              access_token_secret: estreamer.token_secret
-            });
-            const id = content.match(/(\d+)/g);
+            if (estreamer.permissions.retweet) {
+              const client = new Twitter({
+                consumer_key: process.env.TWITTER_API_KEY,
+                consumer_secret: process.env.TWITTER_SECRET_API_KEY,
+                access_token_key: estreamer.access_token,
+                access_token_secret: estreamer.token_secret
+              });
+              const id = content.match(/(\d+)/g);
 
-            client.post(`statuses/retweet/${id}`, function () {
-              console.log("Retweeted! ", id);
-            });
+              client.post(`statuses/retweet/${id}`, function () {
+                console.log("Retweeted! ", id);
+              });
+            }
           });
         })
         .catch(err => {
