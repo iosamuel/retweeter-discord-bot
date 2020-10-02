@@ -44,7 +44,7 @@ bot.on("messageCreate", async ({ channel, content }) => {
                 access_token_key: estreamer.access_token,
                 access_token_secret: estreamer.token_secret
               });
-              const id = content.match(/(\d+)/g);
+              const id = content.match(/status\/(\d+)/)?.[1];
 
               client.post(`statuses/retweet/${id}`, function () {
                 console.log("Retweeted! ", id);
