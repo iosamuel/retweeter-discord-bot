@@ -44,11 +44,14 @@ bot.on("messageCreate", async ({ channel, content }) => {
                 access_token_key: estreamer.access_token,
                 access_token_secret: estreamer.token_secret
               });
-              const id = content.match(/status\/(\d+)/)?.[1];
+              const idMatch = content.match(/status\/(\d+)/);
+              const id = idMatch && idMatch[1];
 
-              client.post(`statuses/retweet/${id}`, function () {
-                console.log("Retweeted! ", id);
-              });
+              if (id) {
+                client.post(`statuses/retweet/${id}`, function () {
+                  console.log("Retweeted! ", id);
+                });
+              }
             }
           });
         })
